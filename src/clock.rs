@@ -25,15 +25,13 @@ impl<HostType: Clone + Hash + Eq> VectorClock<HostType> {
     pub fn incremented(&self, host: HostType) -> Self {
         let mut entries = self.entries.clone();
 
-        {
-            match entries.entry(host) {
-                Entry::Vacant(e) => { e.insert(1); },
-                Entry::Occupied(mut e) => {
-                    let v = *e.get();
-                    e.insert(v + 1);
-                },
-            };
-        }
+        match entries.entry(host) {
+            Entry::Vacant(e) => { e.insert(1); },
+            Entry::Occupied(mut e) => {
+                let v = *e.get();
+                e.insert(v + 1);
+            },
+        };
 
         VectorClock {
             entries: entries,
