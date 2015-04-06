@@ -10,8 +10,8 @@ pub enum TemporalRelation {
     Concurrent,
 }
 
-#[derive(PartialEq, Eq, Debug, Clone)]
-pub struct VectorClock<HostType: Clone + Hash + Eq> {
+#[derive(PartialEq, Eq, Debug)]
+pub struct VectorClock<HostType: Hash + Eq> {
     entries: HashMap<HostType, u64>,
 }
 
