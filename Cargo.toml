@@ -1,0 +1,7 @@
+[package]
+name = "vectorclock-rs"
+version = "0.0.1"
+authors = ["mhallin <mhallin@gmail.com>"]
+description = "Vector clock implementation for distributed systems"
+license = "MIT"
+homepage = "https://github.com/mhallin/vectorclock-rs"
