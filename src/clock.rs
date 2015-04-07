@@ -99,6 +99,16 @@ impl<HostType: Clone + Hash + Eq> VectorClock<HostType> {
             entries: entries,
         }
     }
+
+    pub fn to_vec(&self) -> Vec<(HostType, u64)> {
+        self.entries.iter().map(| (host, &n) | (host.clone(), n) ).collect()
+    }
+
+    pub fn from_vec(v: Vec<(HostType, u64)>) -> VectorClock<HostType> {
+        VectorClock {
+            entries: v.iter().cloned().collect(),
+        }
+    }
 }
 
 #[cfg(test)]
@@ -154,5 +164,23 @@ mod test {
 
         assert!(m.temporal_relation(&c2) == TemporalRelation::EffectOf);
         assert!(c2.temporal_relation(&m) == TemporalRelation::Caused);
+    }
+
+    #[test]
+    fn test_to_vec() {
+        let c = StrVectorClock::new();
+        let e : Vec<(&'static str, u64)> = vec![];
+
+        assert_eq!(e, c.to_vec());
+
+        let c = c.incremented("A");
+
+        assert_eq!(vec![("A", 1)], c.to_vec());
+
+        let c = c.incremented("B");
+        let mut v = c.to_vec();
+        v.sort();
+
+        assert_eq!(vec![("A", 1), ("B", 1)], v);
     }
 }
